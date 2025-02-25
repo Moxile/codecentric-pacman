@@ -5,6 +5,7 @@ from agents.HumanPacman import HumanPacman
 from agents.Ghost import Ghost
 from WorldRendering import *
 from Mazes import *
+from agents.customghost import Blinky, Pinky, Inky, Clyde
 
 WRITER = Turtle(visible=False)
 
@@ -82,10 +83,10 @@ def get_agent_game_state(agent):
 
 pacman = HumanPacman(vector(-40, -60), valid)
 ghosts = [
-    Ghost(vector(-120, -100), valid),
-    Ghost(vector(-120, 100), valid),
-    Ghost(vector(100, 100), valid),
-    Ghost(vector(100, -100), valid),
+    Blinky(vector(-120, -100), valid),
+    Pinky(vector(-120, 100), valid),
+    Inky(vector(100, 100), valid),
+    Clyde(vector(100, -100), valid),
 ]
 
 setup(420, 420, 370, 0) # window
