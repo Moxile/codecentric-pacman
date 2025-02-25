@@ -80,7 +80,7 @@ def get_agent_game_state(agent):
     return agent_state
 
 
-pacman = HumanPacman(vector(-40, -80), valid)
+pacman = HumanPacman(vector(-40, -60), valid)
 ghosts = [
     Ghost(vector(-180, 160), valid),
     Ghost(vector(-180, -160), valid),
