@@ -82,10 +82,10 @@ def get_agent_game_state(agent):
 
 pacman = HumanPacman(vector(-40, -60), valid)
 ghosts = [
-    Ghost(vector(-180, 160), valid),
-    Ghost(vector(-180, -160), valid),
-    Ghost(vector(100, 160), valid),
-    Ghost(vector(100, -160), valid),
+    Ghost(vector(-120, -100), valid),
+    Ghost(vector(-120, 100), valid),
+    Ghost(vector(100, 100), valid),
+    Ghost(vector(100, -100), valid),
 ]
 
 setup(420, 420, 370, 0) # window
