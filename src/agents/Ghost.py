@@ -5,6 +5,7 @@ import random
 class Ghost(BaseAgent.BaseAgent):
 
     can_sense = True
+    sense_reach = 3
     color = "red"
     
     def sense_pacman(self, pacman_pos):
@@ -13,12 +14,12 @@ class Ghost(BaseAgent.BaseAgent):
         pacman_x = pacman_pos.x
         pacman_y = pacman_pos.y
 
-        if abs(ghost_x - pacman_x) == 0 and abs(ghost_y - pacman_y) < 3*20:
+        if abs(ghost_x - pacman_x) == 0 and abs(ghost_y - pacman_y) < self.sense_reach*20:
             if ghost_y < pacman_y and self.valid(self.position + self.UP):
                 return self.UP
             elif self.valid(self.position + self.DOWN):
                 return self.DOWN
-        elif abs(ghost_y - pacman_y) == 0 and abs(ghost_x - pacman_x) < 3*20:
+        elif abs(ghost_y - pacman_y) == 0 and abs(ghost_x - pacman_x) < self.sense_reach*20:
             if ghost_x < pacman_x and self.valid(self.position + self.RIGHT):
                 return self.RIGHT
             elif self.valid(self.position + self.LEFT):

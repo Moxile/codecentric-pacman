@@ -3,7 +3,7 @@ from freegames import vector
 
 
 class Blinky(Ghost.Ghost):
-    color = "red"
+    color = "#FF0000"
     DOWN = vector(0, -10)
     UP = vector(0, 10)
     LEFT = vector(-10, 0)
@@ -12,12 +12,14 @@ class Blinky(Ghost.Ghost):
 
 
 class Pinky (Ghost.Ghost) :
-    color = "pink"
+    sense_reach = 2
+    color = "#FC0FC0"
 
 class Inky (Ghost. Ghost):
-    color = "teal"
+    color = "#00E6E6"
 
 
 class Clyde (Ghost.Ghost):
-    color = "orange"
+    sense_reach = 4
+    color = "#FF5B00"
 
