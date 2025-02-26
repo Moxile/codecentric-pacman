@@ -79,3 +79,5 @@ class Mazes:
     for i in level_1:
         if i == 1:
             level_1_max_score+= 1
+        elif i == 3:
+            level_1_max_score+= 100
