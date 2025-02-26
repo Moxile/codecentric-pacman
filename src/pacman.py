@@ -49,6 +49,12 @@ def update_world():
         WORLD.render_empty_tile(index)
     WORLD.render_score(state["score"])
 
+    if MAZE[index] == 3:
+        MAZE[index] = TILE_EMPTY
+        state["score"] += 100
+        WORLD.render_empty_tile(index)
+    WORLD.render_score(state["score"])
+
     # move all agents
     for ghost in ghosts:
         ghost.step(get_agent_game_state(ghost))
@@ -84,7 +90,7 @@ def get_agent_game_state(agent):
 pacman = HumanPacman(vector(-40, -60), valid)
 ghosts = [
     Blinky(vector(-120, -100), valid),
-    Pinky(vector(-120, 100), valid),
+    Pinky(vector(-40, 100), valid),
     Inky(vector(100, 100), valid),
     Clyde(vector(100, -100), valid),
 ]
