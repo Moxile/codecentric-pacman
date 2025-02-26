@@ -1,9 +1,10 @@
 from . import BaseAgent
 import random
 
+
 class Ghost(BaseAgent.BaseAgent):
 
-
+    can_sense = True
     color = "red"
     
     def sense_pacman(self, pacman_pos):
@@ -26,7 +27,7 @@ class Ghost(BaseAgent.BaseAgent):
 
 
     def step(self, game_state):
-        if self.sense_pacman(game_state["pacman"]):
+        if self.sense_pacman(game_state["pacman"]) and self.can_sense == True:
             self.course = self.sense_pacman(game_state["pacman"])
             self._move(self.course)
         elif self.course and self.valid(self.position + self.course):

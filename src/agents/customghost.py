@@ -8,6 +8,7 @@ class Blinky(Ghost.Ghost):
     UP = vector(0, 10)
     LEFT = vector(-10, 0)
     RIGHT = vector(10, 0)
+    can_sense = False
 
 
 class Pinky (Ghost.Ghost) :
