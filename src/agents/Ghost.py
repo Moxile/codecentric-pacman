@@ -2,8 +2,7 @@ from . import BaseAgent
 import random
 
 class Ghost(BaseAgent.BaseAgent):
-    color = "red"
-    
+
     def step(self, game_state):
         if self.course and self.valid(self.position + self.course):
             self._move(self.course)

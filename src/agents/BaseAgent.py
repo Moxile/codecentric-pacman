@@ -1,7 +1,7 @@
 from freegames import vector
 
 class BaseAgent:
-    color = "white"
+
     
     DOWN = vector(0, -5)
     UP = vector(0, 5)

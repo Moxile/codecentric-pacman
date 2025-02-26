@@ -1,9 +1,13 @@
 from . import Ghost
+from freegames import vector
 
 
 class Blinky(Ghost.Ghost):
     color = "red"
-    # def __init__ (self,)
+    DOWN = vector(0, -10)
+    UP = vector(0, 10)
+    LEFT = vector(-10, 0)
+    RIGHT = vector(10, 0)
 
 
 class Pinky (Ghost.Ghost) :
