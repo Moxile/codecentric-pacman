@@ -2,7 +2,6 @@ from freegames import vector
 
 class BaseAgent:
     color = "white"
-    speed = 1.00
     
     DOWN = vector(0, -5)
     UP = vector(0, 5)
@@ -17,7 +16,7 @@ class BaseAgent:
 
     def _move(self, delta):
         """Change the agent's position if valid."""
-        if self.valid(self.position + delta*self.speed):
+        if self.valid(self.position + delta):
             self.position.move(delta)
             return True
         return False

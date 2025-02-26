@@ -3,7 +3,6 @@ import random
 
 class Ghost(BaseAgent.BaseAgent):
     color = "red"
-    speed = 1.00
     
     def sense_pacman(self, pacman_pos):
         ghost_x = self.position.x
@@ -26,13 +25,10 @@ class Ghost(BaseAgent.BaseAgent):
     def step(self, game_state):
         if self.sense_pacman(game_state["pacman"]):
             self.course = self.sense_pacman(game_state["pacman"])
-            self.speed = 1.20
             self._move(self.course)
         elif self.course and self.valid(self.position + self.course):
-            self.speed = 1.00
             self._move(self.course)
         else:
-            self.speed = 1.00
             options = [
                 self.DOWN,
                 self.UP,
