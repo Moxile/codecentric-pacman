@@ -87,7 +87,7 @@ def get_agent_game_state(agent):
     return agent_state
 
 
-pacman = HumanPacman(vector(-40, -80), valid)
+pacman = HumanPacman(vector(-40, -60), valid)
 ghosts = [
     Blinky(vector(-120, -100), valid),
     Pinky(vector(-40, 100), valid),
