@@ -114,15 +114,15 @@ class DQNPacman(BaseAgent):
         state = self._preprocess_state(game_state)
         
         if hasattr(self, 'last_state'):
-            reward = -0.1  # Small penalty for each step
+            reward = -1  # Small penalty for each step
             index = offset(game_state["pacman"])
 
             if game_state["surrounding"][index] == 1:
-                reward += 100  # Reward for taking a coin
+                reward += 10  # Reward for taking a coin
             if game_state["surrounding"][index] == 3:
-                reward += 1  # Reward for taking a pellet
-            if any(abs(self.position - ghost.position) < 20 for ghost in game_state["ghosts"]):
-                reward -= 100  # Penalty for dying
+                reward += 100  # Reward for taking a pellet
+            if any(abs(self.position - ghost) < 20 for ghost in game_state["ghosts"]):
+                reward -= 10000  # Penalty for dying
             
             self.remember(self.last_state, self.last_action, reward, state, False)
         

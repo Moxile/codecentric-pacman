@@ -81,7 +81,7 @@ def update_world():
             WORLD.render_end_game("You lost!", "red")
             return
 
-    ontimer(update_world, 100)
+    #ontimer(update_world, 100)
 
 def get_agent_game_state(agent):
     """Returns the part of the world that the given agent can see.
@@ -138,7 +138,7 @@ def main():
     WORLD.world()
 
     # Train the AI
-    train_ai(5)
+    train_ai(100)
 
     # Run the game once to see the AI's performance
     reset_game()
