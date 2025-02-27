@@ -5,6 +5,7 @@ TILE_SIZE = 20
 class WorldRendering:
     WRITER = Turtle(visible=False)
     SCORE_WRITER = Turtle(visible=False)
+    HIGHSCORE_WRITER = Turtle(visible=False)
 
     def __init__(self, maze, font=("Verdana", 16, "bold")):
         self.maze = maze
@@ -60,9 +61,9 @@ class WorldRendering:
 
     def render_score(self, score):
         self.SCORE_WRITER.undo()
-        self.SCORE_WRITER.goto(160, 160)
+        self.SCORE_WRITER.goto(100, 160)
         self.SCORE_WRITER.color("white")
-        self.SCORE_WRITER.write(score, font=self.font)
+        self.SCORE_WRITER.write("SCORE: " + str(score), font=self.font)
 
     def render_end_game(self, message, tcolor):
         self.WRITER.penup()
@@ -74,3 +75,9 @@ class WorldRendering:
     def clear_end_game(self):
         """Clears the end game message from the screen."""
         self.WRITER.clear()
+
+    def render_highscore(self, score):
+        self.HIGHSCORE_WRITER.undo()
+        self.HIGHSCORE_WRITER.goto(-160, 160)
+        self.HIGHSCORE_WRITER.color("white")
+        self.HIGHSCORE_WRITER.write("HIGHSCORE: " + str(score), font=self.font)

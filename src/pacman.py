@@ -14,7 +14,9 @@ MAZE = Mazes.level_1
 MAX_SCORE = Mazes.level_1_max_score
 WORLD = WorldRendering(MAZE)
 
+highscore = 0
 pause = False
+
 
 state = {"score": 0}
 
@@ -63,6 +65,7 @@ def update_world():
     - Checks if game is lost/won.
     """
     clear()
+
     if pause:
         ontimer(update_world, 100)
         return
@@ -86,6 +89,11 @@ def update_world():
     pacman.step(get_agent_game_state(pacman))
     WORLD.render_agent(pacman)
     update()
+
+    global highscore
+    if state["score"] > highscore:
+        highscore = state["score"]
+        WORLD.render_highscore(state["score"])
 
     # check for game end
     if state["score"] == MAX_SCORE:
