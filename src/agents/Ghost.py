@@ -30,9 +30,9 @@ class Ghost(BaseAgent.BaseAgent):
     def step(self, game_state):
         if self.sense_pacman(game_state["pacman"]) and self.can_sense == True:
             self.course = self.sense_pacman(game_state["pacman"])
-            self._move(self.course)
+            self.move(self.course)
         elif self.course and self.valid(self.position + self.course):
-            self._move(self.course)
+            self.move(self.course)
         else:
             options = [
                 self.DOWN,

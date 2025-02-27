@@ -10,7 +10,7 @@ from copy import copy
 
 WRITER = Turtle(visible=False)
 
-MAZE = Mazes.level_1
+MAZE = copy(Mazes.level_1)
 MAX_SCORE = Mazes.level_1_max_score
 WORLD = WorldRendering(MAZE)
 
@@ -51,6 +51,7 @@ def reset_game():
     WORLD.clear_end_game()  # Add this line to clear the end game message
     state["score"] = 0
     MAZE = copy(Mazes.level_1)
+    WORLD.maze = MAZE
     pacman = HumanPacman(vector(-40, -60), valid)
     ghosts = [
         Blinky(vector(-120, -100), valid),
@@ -137,15 +138,17 @@ def toggle_pause():
     pause = not pause
     if not pause:
         WORLD.clear_end_game()
+        WORLD.maze = MAZE
         WORLD.world()
     else:
         WORLD.render_end_game("Paused", "white")
 
-setup(420, 420, 370, 0) # window
-hideturtle()
-tracer(False)
-listen()
-reset_game()
-onkey(toggle_pause, 'Escape')
-onkey(reset_game, 'Return')
-done()
+if __name__ == "__main__":
+    setup(420, 420, 370, 0) # window
+    hideturtle()
+    tracer(False)
+    listen()
+    reset_game()
+    onkey(toggle_pause, 'Escape')
+    onkey(reset_game, 'Return')
+    done()

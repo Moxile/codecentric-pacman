@@ -36,4 +36,4 @@ class HumanPacman(BaseAgent.BaseAgent):
         onkey(lambda: self.up(), "Up")
         onkey(lambda: self.down(), "Down")
         if self.course:
-            self._move(self.course)
+            self.move(self.course)

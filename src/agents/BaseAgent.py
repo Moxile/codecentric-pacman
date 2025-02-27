@@ -14,7 +14,7 @@ class BaseAgent:
         self.position = position
         self.valid = valid_function
 
-    def _move(self, delta):
+    def move(self, delta):
         """Change the agent's position if valid."""
         if self.valid(self.position + delta):
             self.position.move(delta)
