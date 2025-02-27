@@ -7,6 +7,7 @@ class Ghost(BaseAgent.BaseAgent):
     can_sense = True
     sense_reach = 3
     color = "red"
+    kill_timer = 0
     
     def sense_pacman(self, pacman_pos):
         ghost_x = self.position.x

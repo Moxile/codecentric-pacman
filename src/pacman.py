@@ -79,14 +79,22 @@ def update_world():
         WORLD.render_empty_tile(index)
     WORLD.render_score(state["score"])
 
-    if MAZE[index] == 3:
+    if MAZE[index] == TILE_COINT:
         MAZE[index] = TILE_EMPTY
         state["score"] += 100
         WORLD.render_empty_tile(index)
     WORLD.render_score(state["score"])
 
+    if MAZE[index] == TILE_DEAD:
+        MAZE[index] = TILE_EMPTY
+        pacman.kill_points += 1
+        WORLD.render_empty_tile(index)
     # move all agents
     for ghost in ghosts:
+        if ghost.kill_timer > 0:
+            ghost.kill_timer -= 1
+            WORLD.render_agent(ghost)
+            continue
         ghost.step(get_agent_game_state(ghost))
         WORLD.render_agent(ghost)
     pacman.step(get_agent_game_state(pacman))
@@ -105,7 +113,11 @@ def update_world():
         end = True
         return
     for ghost in ghosts:
-        if abs(pacman.position - ghost.position) < 20:
+        if abs(pacman.position - ghost.position) < 20 and ghost.kill_timer <= 0:
+            if pacman.kill_points > 0:
+                pacman.kill_points -= 1
+                ghost.kill_timer = 100
+                continue
             WORLD.render_end_game("You lost!", "red")
             end = True
             return

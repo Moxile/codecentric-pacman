@@ -5,6 +5,7 @@ class HumanPacman(BaseAgent.BaseAgent):
     color = "yellow"
     next_in_queue = None
     timer = 0
+    kill_points = 0
 
     def down(self):
         self.next_in_queue = self.DOWN

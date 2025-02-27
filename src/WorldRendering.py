@@ -41,10 +41,14 @@ class WorldRendering:
                     self.WRITER.up()
                     self.WRITER.goto(x + 10, y + 10)
                     self.WRITER.dot(2, "white")
-            if tile == 3:
-                self.WRITER.up()
-                self.WRITER.goto(x + 10, y + 10)
-                self.WRITER.dot(10, "white")
+                if tile == 3:
+                    self.WRITER.up()
+                    self.WRITER.goto(x + 10, y + 10)
+                    self.WRITER.dot(10, "white")
+                if tile == 4:
+                    self.WRITER.up()
+                    self.WRITER.goto(x + 10, y + 10)
+                    self.WRITER.dot(10,"red")
 
 
     def render_agent(self, agent):

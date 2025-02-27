@@ -1,1 +1,2 @@
 freegames
+pytest
