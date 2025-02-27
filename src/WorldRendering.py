@@ -70,3 +70,7 @@ class WorldRendering:
         self.WRITER.color(tcolor)
         self.WRITER.pendown()
         self.WRITER.write(message, align="center", font=self.font)
+
+    def clear_end_game(self):
+        """Clears the end game message from the screen."""
+        self.WRITER.clear()
