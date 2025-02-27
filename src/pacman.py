@@ -6,6 +6,8 @@ from agents.Ghost import Ghost
 from WorldRendering import *
 from Mazes import *
 from agents.customghost import Blinky, Pinky, Inky, Clyde
+from agents.DQNPacman import DQNPacman
+import os
 
 WRITER = Turtle(visible=False)
 
@@ -41,6 +43,8 @@ def update_world():
     - Moves pacman and all ghosts.
     - Checks if game is lost/won.
     """
+    global prev_score  # Add this line at the top of the file
+
     clear()
     index = offset(pacman.position)
     if MAZE[index] == TILE_DOT:
@@ -55,7 +59,7 @@ def update_world():
         WORLD.render_empty_tile(index)
     WORLD.render_score(state["score"])
 
-    # move all agents
+    # Move all agents
     for ghost in ghosts:
         ghost.step(get_agent_game_state(ghost))
         WORLD.render_agent(ghost)
@@ -63,7 +67,12 @@ def update_world():
     WORLD.render_agent(pacman)
     update()
 
-    # check for game end
+    # === Add Training Integration Here ===
+    if isinstance(pacman, DQNPacman):
+        pacman.replay()  # Train after each step
+    # === End of Training Integration ===
+
+    # Check for game end
     if state["score"] == MAX_SCORE:
         WORLD.render_end_game("You won!", "yellow")
         return
@@ -86,8 +95,9 @@ def get_agent_game_state(agent):
     agent_state["ghosts"] = [ghost.position for ghost in ghosts]
     return agent_state
 
-
-pacman = HumanPacman(vector(-40, -60), valid)
+# Load model if it exists
+model_path = "dqn_pacman_model.pth"
+pacman = DQNPacman(vector(-40, -60), valid, model_path=model_path)
 ghosts = [
     Blinky(vector(-120, -100), valid),
     Pinky(vector(-40, 100), valid),
@@ -95,10 +105,45 @@ ghosts = [
     Clyde(vector(100, -100), valid),
 ]
 
-setup(420, 420, 370, 0) # window
-hideturtle()
-tracer(False)
-listen()
-WORLD.world()
-update_world()
-done()
+def train_ai(episodes):
+    for episode in range(episodes):
+        reset_game()
+        while True:
+            update_world()
+            if state["score"] == MAX_SCORE or any(abs(pacman.position - ghost.position) < 20 for ghost in ghosts):
+                break
+        if episode % 10 == 0:
+            print(f"Episode {episode} completed.")
+            pacman.save_model(model_path)  # Save the model periodically
+    # Save the model after training
+    pacman.save_model(model_path)
+
+def reset_game():
+    global pacman, ghosts, state, MAZE
+    state["score"] = 0
+    MAZE = Mazes.level_1.copy()
+    pacman = DQNPacman(vector(-40, -60), valid, model_path=model_path)
+    ghosts = [
+        Blinky(vector(-120, -100), valid),
+        Pinky(vector(-40, 100), valid),
+        Inky(vector(100, 100), valid),
+        Clyde(vector(100, -100), valid),
+    ]
+
+def main():
+    setup(420, 420, 370, 0) # window
+    hideturtle()
+    tracer(False)
+    listen()
+    WORLD.world()
+
+    # Train the AI
+    train_ai(5)
+
+    # Run the game once to see the AI's performance
+    reset_game()
+    update_world()
+    done()
+
+if __name__ == "__main__":
+    main()
