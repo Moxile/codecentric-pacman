@@ -7,6 +7,7 @@ from WorldRendering import *
 from Mazes import *
 from agents.customghost import Blinky, Pinky, Inky, Clyde
 from copy import copy
+import pickle
 
 WRITER = Turtle(visible=False)
 
@@ -14,12 +15,28 @@ MAZE = copy(Mazes.level_1)
 MAX_SCORE = Mazes.level_1_max_score
 WORLD = WorldRendering(MAZE)
 
-highscore = 0
 pause = False
 
 end = True
 
 state = {"score": 0}
+
+HIGHSCORE_FILE = "highscore.pkl"
+
+def save_highscore(highscore):
+    """Save the highscore to a file."""
+    with open(HIGHSCORE_FILE, 'wb') as f:
+        pickle.dump(highscore, f)
+
+def load_highscore():
+    """Load the highscore from a file."""
+    try:
+        with open(HIGHSCORE_FILE, 'rb') as f:
+            return pickle.load(f)
+    except (FileNotFoundError, EOFError):
+        return 0
+
+highscore = load_highscore()
 
 def offset(point):
     """Return offset of point in tiles."""
@@ -104,6 +121,7 @@ def update_world():
     global highscore
     if state["score"] > highscore:
         highscore = state["score"]
+        save_highscore(highscore)  # Pass the highscore value here
         WORLD.render_highscore(state["score"])
 
     global end
@@ -160,6 +178,7 @@ if __name__ == "__main__":
     hideturtle()
     tracer(False)
     listen()
+    WORLD.render_highscore(highscore)
     reset_game()
     onkey(toggle_pause, 'Escape')
     onkey(reset_game, 'Return')
