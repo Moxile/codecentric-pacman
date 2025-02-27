@@ -6,12 +6,18 @@ from agents.Ghost import Ghost
 from WorldRendering import *
 from Mazes import *
 from agents.customghost import Blinky, Pinky, Inky, Clyde
+from copy import copy
 
 WRITER = Turtle(visible=False)
 
-MAZE = Mazes.level_1
+MAZE = copy(Mazes.level_1)
 MAX_SCORE = Mazes.level_1_max_score
 WORLD = WorldRendering(MAZE)
+
+highscore = 0
+pause = False
+
+end = True
 
 state = {"score": 0}
 
@@ -36,12 +42,36 @@ def valid(position):
     is_in_row = position.x % TILE_SIZE == 0
     return is_in_row or is_in_column
 
+def reset_game():
+    """Resets the game state to start a new game."""
+    global pacman, ghosts, state, MAZE, pause, end
+    if pause or not end:
+        return
+    end = False
+    WORLD.clear_end_game()  # Add this line to clear the end game message
+    state["score"] = 0
+    MAZE = copy(Mazes.level_1)
+    WORLD.maze = MAZE
+    pacman = HumanPacman(vector(-40, -60), valid)
+    ghosts = [
+        Blinky(vector(-120, -100), valid),
+        Pinky(vector(-40, 100), valid),
+        Inky(vector(100, 100), valid),
+        Clyde(vector(100, -100), valid),
+    ]
+    WORLD.world()
+    update_world()
+
 def update_world():
     """Updates the world repeatedly until the game finishes. 
     - Moves pacman and all ghosts.
     - Checks if game is lost/won.
     """
     clear()
+
+    if pause:
+        ontimer(update_world, 100)
+        return
     index = offset(pacman.position)
     if MAZE[index] == TILE_DOT:
         MAZE[index] = TILE_EMPTY
@@ -49,27 +79,47 @@ def update_world():
         WORLD.render_empty_tile(index)
     WORLD.render_score(state["score"])
 
-    if MAZE[index] == 3:
+    if MAZE[index] == TILE_COINT:
         MAZE[index] = TILE_EMPTY
         state["score"] += 100
         WORLD.render_empty_tile(index)
     WORLD.render_score(state["score"])
 
+    if MAZE[index] == TILE_DEAD:
+        MAZE[index] = TILE_EMPTY
+        pacman.kill_points += 1
+        WORLD.render_empty_tile(index)
     # move all agents
     for ghost in ghosts:
+        if ghost.kill_timer > 0:
+            ghost.kill_timer -= 1
+            WORLD.render_agent(ghost)
+            continue
         ghost.step(get_agent_game_state(ghost))
         WORLD.render_agent(ghost)
     pacman.step(get_agent_game_state(pacman))
     WORLD.render_agent(pacman)
     update()
 
+    global highscore
+    if state["score"] > highscore:
+        highscore = state["score"]
+        WORLD.render_highscore(state["score"])
+
+    global end
     # check for game end
     if state["score"] == MAX_SCORE:
         WORLD.render_end_game("You won!", "yellow")
+        end = True
         return
     for ghost in ghosts:
-        if abs(pacman.position - ghost.position) < 20:
+        if abs(pacman.position - ghost.position) < 20 and ghost.kill_timer <= 0:
+            if pacman.kill_points > 0:
+                pacman.kill_points -= 1
+                ghost.kill_timer = 100
+                continue
             WORLD.render_end_game("You lost!", "red")
+            end = True
             return
 
     ontimer(update_world, 100)
@@ -95,10 +145,22 @@ ghosts = [
     Clyde(vector(100, -100), valid),
 ]
 
-setup(420, 420, 370, 0) # window
-hideturtle()
-tracer(False)
-listen()
-WORLD.world()
-update_world()
-done()
+def toggle_pause():
+    global pause
+    pause = not pause
+    if not pause:
+        WORLD.clear_end_game()
+        WORLD.maze = MAZE
+        WORLD.world()
+    else:
+        WORLD.render_end_game("Paused", "white")
+
+if __name__ == "__main__":
+    setup(420, 420, 370, 0) # window
+    hideturtle()
+    tracer(False)
+    listen()
+    reset_game()
+    onkey(toggle_pause, 'Escape')
+    onkey(reset_game, 'Return')
+    done()

@@ -7,6 +7,7 @@ class Ghost(BaseAgent.BaseAgent):
     can_sense = True
     sense_reach = 3
     color = "red"
+    kill_timer = 0
     
     def sense_pacman(self, pacman_pos):
         ghost_x = self.position.x
@@ -30,9 +31,9 @@ class Ghost(BaseAgent.BaseAgent):
     def step(self, game_state):
         if self.sense_pacman(game_state["pacman"]) and self.can_sense == True:
             self.course = self.sense_pacman(game_state["pacman"])
-            self._move(self.course)
+            self.move(self.course)
         elif self.course and self.valid(self.position + self.course):
-            self._move(self.course)
+            self.move(self.course)
         else:
             options = [
                 self.DOWN,
