@@ -17,6 +17,7 @@ WORLD = WorldRendering(MAZE)
 highscore = 0
 pause = False
 
+end = True
 
 state = {"score": 0}
 
@@ -43,9 +44,10 @@ def valid(position):
 
 def reset_game():
     """Resets the game state to start a new game."""
-    global pacman, ghosts, state, MAZE, pause
-    if pause:
+    global pacman, ghosts, state, MAZE, pause, end
+    if pause or not end:
         return
+    end = False
     WORLD.clear_end_game()  # Add this line to clear the end game message
     state["score"] = 0
     MAZE = copy(Mazes.level_1)
@@ -95,13 +97,16 @@ def update_world():
         highscore = state["score"]
         WORLD.render_highscore(state["score"])
 
+    global end
     # check for game end
     if state["score"] == MAX_SCORE:
         WORLD.render_end_game("You won!", "yellow")
+        end = True
         return
     for ghost in ghosts:
         if abs(pacman.position - ghost.position) < 20:
             WORLD.render_end_game("You lost!", "red")
+            end = True
             return
 
     ontimer(update_world, 100)
@@ -141,6 +146,6 @@ hideturtle()
 tracer(False)
 listen()
 reset_game()
-onkey(reset_game, 'Return')
 onkey(toggle_pause, 'Escape')
+onkey(reset_game, 'Return')
 done()
