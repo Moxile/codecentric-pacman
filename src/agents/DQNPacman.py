@@ -22,7 +22,7 @@ class DQNPacman(BaseAgent):
     BATCH_SIZE = 128       # Larger batch size for GPU parallelization
     MEMORY_SIZE = 50000    # Increased memory for more experiences
     GAMMA = 0.99           # Discount factor
-    EPS_START = 1.0        # Initial epsilon for exploration
+    EPS_START = 0.5        # Initial epsilon for exploration
     EPS_END = 0.01         # Minimum epsilon
     EPS_DECAY = 0.999      # Slower decay for extended exploration
     TARGET_UPDATE = 1000   # Update target network every 1000 steps
