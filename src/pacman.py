@@ -144,6 +144,8 @@ def update_world():
             WORLD.render_end_game("You lost!", "red")
             end = True
             return
+        
+    ontimer(update_world, 100)
 
 def get_agent_game_state(agent):
     """Returns the agent's view of the game state."""
@@ -188,7 +190,7 @@ def main():
     reset_game()
 
     # Train the AI
-    train_ai(100)
+    #train_ai(50000)
 
     # Run the game to observe AI performance
     reset_game()

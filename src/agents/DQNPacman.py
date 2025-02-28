@@ -163,14 +163,14 @@ class DQNPacman(BaseAgent):
 
         # If we have a previous state, calculate reward and store experience
         if hasattr(self, 'last_state'):
-            reward = -0.1  # Small penalty per step
+            reward = -0.05  # Small penalty per step
             index = offset(game_state["pacman"])
             if game_state["surrounding"][index] == 1:  # Dot
-                reward += 1
+                reward += 10
             if game_state["surrounding"][index] == 3:  # Pellet
                 reward += 100
             if any(abs(self.position - ghost) < 20 for ghost in game_state["ghosts"]):  # Collision with ghost
-                reward -= 50
+                reward -= 100
             done = False  # Game end handled externally
             self.remember(self.last_state, self.last_action, reward, state, done)
             self.replay()  # Train on the experience
